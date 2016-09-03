@@ -3,6 +3,7 @@ package br.com.urban.sandbox.jaxrs.resource;
 import java.net.URI;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -38,4 +39,11 @@ public class ProjetoResource {
 		URI location = URI.create("/projetos/" + projeto.getId());
 		return Response.created(location).build();
 	}
+	
+	@Path("{id}")
+    @DELETE
+    public Response removeProjeto(@PathParam("id") long id) {
+        new ProjetoDAO().remove(id);
+        return Response.ok().build();
+    }
 }
