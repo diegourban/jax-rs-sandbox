@@ -5,3 +5,9 @@ sending a post
 curl -d (data)
 curl -d "xml content here" http://localhost:8080/carrinhos
 curl -v -d "xml content here" http://localhost:8080/carrinhos
+
+Sending a POST to create a resource:
+curl -v -d "<br.com.urban.sandbox.jaxrs.modelo.Carrinho><produtos><br.com.urban.sandbox.jaxrs.modelo.Produto><preco>4000.0</preco><id>6237</id><nome>Videogame 4</nome><quantidade>1</quantidade></br.com.urban.sandbox.jaxrs.modelo.Produto></produtos><rua>Rua Vergueiro 3185, 8 andar</rua><cidade>Sao Paulo</cidade><id>1</id></br.com.urban.sandbox.jaxrs.modelo.Carrinho>" http://localhost:8080/carrinhos
+
+Sending a POST type xml to create a resouce:
+curl -v -H "Content-Type: application/xml" -d "<br.com.urban.sandbox.jaxrs.modelo.Carrinho><produtos><br.com.urban.sandbox.jaxrs.modelo.Produto><preco>4000.0</preco><id>6237</id><nome>Videogame 4</nome><quantidade>1</quantidade></br.com.urban.sandbox.jaxrs.modelo.Produto></produtos><rua>Rua Vergueiro 3185, 8 andar</rua><cidade>Sao Paulo</cidade><id>1</id></br.com.urban.sandbox.jaxrs.modelo.Carrinho>" http://localhost:8080/carrinhos

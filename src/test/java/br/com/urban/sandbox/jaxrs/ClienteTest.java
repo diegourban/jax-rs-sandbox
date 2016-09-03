@@ -1,6 +1,6 @@
 package br.com.urban.sandbox.jaxrs;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -23,6 +23,7 @@ import br.com.urban.sandbox.jaxrs.modelo.Projeto;
 public class ClienteTest {
 	
 	private HttpServer server;
+	private Client client;
 
 	@Before
 	public void before() {
@@ -36,7 +37,7 @@ public class ClienteTest {
 	
 	@Test
 	public void deveBuscarOCarrinhoEsperado() {
-		Client client = ClientBuilder.newClient();
+		client = ClientBuilder.newClient();
 		WebTarget target = client.target("http://localhost:8080");
 		String conteudo = target.path("/carrinhos/1").request().get(String.class);
 		Carrinho carrinho = (Carrinho) new XStream().fromXML(conteudo);
@@ -66,7 +67,11 @@ public class ClienteTest {
         Entity<String> entity = Entity.entity(xml, MediaType.APPLICATION_XML);
         
         Response response = target.path("/carrinhos").request().post(entity);
-        assertEquals("<status>sucesso</status>", response.readEntity(String.class));
+        assertEquals(201, response.getStatus());
+        
+        String location = response.getHeaderString("Location");
+        String conteudo = client.target(location).request().get(String.class);
+        assertTrue(conteudo.contains("Tablet"));
 	}
 
 }
