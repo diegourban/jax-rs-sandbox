@@ -22,9 +22,11 @@ public class CarrinhoResource {
 	@Path("{id}")
 	@GET
 	@Produces(MediaType.APPLICATION_XML)
-	public String busca(@PathParam("id") long id) {
+	public Response busca(@PathParam("id") long id) {
 		Carrinho carrinho = new CarrinhoDAO().busca(id);
-		return carrinho.toXML();
+		
+		//return carrinho.toXML();
+		return Response.ok(carrinho.toXML()).build();
 	}
 	
 //	@Path("{id}")
