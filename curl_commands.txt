@@ -1,0 +1,7 @@
+curl -v (verbose)
+curl -v http://localhost:8080/carrinhos/1
+
+sending a post
+curl -d (data)
+curl -d "xml content here" http://localhost:8080/carrinhos
+curl -v -d "xml content here" http://localhost:8080/carrinhos
