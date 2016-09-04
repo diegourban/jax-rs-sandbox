@@ -15,3 +15,5 @@ curl -v -H "Content-Type: application/xml" -d "<br.com.urban.sandbox.jaxrs.model
 curl -X (request command)
 curl -X "DELETE"
 curl -v -X "DELETE" http://localhost:8080/carrinhos/1/produtos/6237
+
+curl -v -X "PUT" -H "Content-Type: application/xml" -d "<br.com.urban.sandbox.jaxrs.modelo.Produto><preco>60.0</preco><id>3467</id><nome>Jogo de esporte</nome><quantidade>1</quantidade></br.com.urban.sandbox.jaxrs.modelo.Produto>" http://localhost:8080/carrinhos/1/produtos/3467/quantidade
