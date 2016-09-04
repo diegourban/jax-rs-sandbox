@@ -1,6 +1,10 @@
 package br.com.urban.sandbox.jaxrs;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -10,6 +14,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.grizzly.http.server.HttpServer;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.logging.LoggingFeature;
+import org.glassfish.jersey.logging.LoggingFeature.Verbosity;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,10 +31,17 @@ public class ClienteTest {
 	
 	private HttpServer server;
 	private Client client;
+	private WebTarget target;
 
 	@Before
 	public void before() {
 		server = Servidor.inicializarServidor();
+		
+		ClientConfig config = new ClientConfig();
+		config.register(new LoggingFeature(Logger.getLogger(""), Level.INFO, Verbosity.HEADERS_ONLY, null));
+		
+		client = ClientBuilder.newClient(config);
+		target = client.target("http://localhost:8080");
 	}
 	
 	@After
@@ -37,8 +51,6 @@ public class ClienteTest {
 	
 	@Test
 	public void deveBuscarOCarrinhoEsperado() {
-		client = ClientBuilder.newClient();
-		WebTarget target = client.target("http://localhost:8080");
 		String conteudo = target.path("/carrinhos/1").request().get(String.class);
 		Carrinho carrinho = (Carrinho) new XStream().fromXML(conteudo);
 		assertEquals("Rua Vergueiro 3185, 8 andar", carrinho.getRua());
@@ -46,8 +58,6 @@ public class ClienteTest {
 	
 	@Test
     public void deveBuscarOProjetoEsperado() {
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target("http://localhost:8080");
         String conteudo = target.path("/projetos/1").request().get(String.class);
         Projeto projeto = (Projeto) new XStream().fromXML(conteudo);
         assertEquals("Minha loja", projeto.getNome());
@@ -55,9 +65,6 @@ public class ClienteTest {
 	
 	@Test
 	public void deveAdicionarCarrinho() {
-		Client client = ClientBuilder.newClient();
-        WebTarget target = client.target("http://localhost:8080");
-        
         Carrinho carrinho = new Carrinho();
         carrinho.adiciona(new Produto(314L, "Tablet", 999, 1));
         carrinho.setRua("Rua Vergueiro");
